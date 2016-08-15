@@ -182,14 +182,14 @@ void brake_controller(int driver_brake){
   {
     if (brake_c >= 2000)
     {
-      rev = map(brake_c, 2000,3500, 255, 7);
-      rev = constrain(rev, 7, 255);
+      rev = map(brake_c, 2000,3500, 255, 30);
+      rev = constrain(rev, 30, 255);
       drive(rev,1); 
     }
     else 
     {
-      throttle = map(brake_c, 2000,500, 255, 7);
-      throttle = constrain(throttle, 7, 255);
+      throttle = map(brake_c, 2000,500, 255, 30);
+      throttle = constrain(throttle, 30, 255);
       drive(throttle, 0);
     }
   } 
