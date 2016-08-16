@@ -20,7 +20,7 @@ const int Throttle = A2;
 int driver_throttle = 0;
 int driver_brake = 30;
 int brake_min = 5;
-int brake_max = 350; // Real_Max = 400
+int brake_max = 350; 
 
 // Output
 /*

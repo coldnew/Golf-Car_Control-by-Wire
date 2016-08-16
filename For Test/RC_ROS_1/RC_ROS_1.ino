@@ -28,10 +28,10 @@ void loop() {
   // Read RC-Steering
   int str_read = pulseIn(PWM_STEER, HIGH);
   if (str_read > 1500){
-    str_msg.data = map(str_read, 1500, 2000, 485, 68);
+    str_msg.data = map(str_read, 1500, 2000, 512, 0);
     }
   else{
-    str_msg.data = map(str_read, 1500, 1050, 485, 952);
+    str_msg.data = map(str_read, 1500, 1050, 512, 1024);
     }
   
   // Read RC-Traction
@@ -42,14 +42,9 @@ void loop() {
     traction_msg.x = 0;
     }
   else{
-    traction_msg.x = map(trac_read, 1500, 1070, 0, 730); //Max = 410
+    traction_msg.x = map(trac_read, 1500, 1070, 0, 730); 
     traction_msg.y = 0;
-
     }
-  //driver_msg.x = analogRead(Throttle);
-  //driver_msg.y = analogRead(Brake);
-  //driver_msg.theta = analogRead(Steer);
-  //traction_msg.x = pulseIn(PWM_TRAC, HIGH);
     
   // Publish Topics
   steering_pub.publish(&str_msg);

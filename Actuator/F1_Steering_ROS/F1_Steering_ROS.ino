@@ -20,14 +20,15 @@ unsigned long str_read;
 int rev;
 int throttle;
 
+/* Calibration the neutral point.*/
+int neutral = 480;
+int max_r = 83;
+int max_l = 970;
+
 // Read the angle
 const int steering_Pin = A0;
-int command = 485;
+int command = 480;
 int sensorValue;
-/* Calibration the neutral point.*/
-int neutral_cal = 45;
-int max_l = 924;
-int max_r = 100;
 
 // PI
 int error = 0;
@@ -47,10 +48,25 @@ ros::Publisher pub("steering_state_1", &str_msg);
 
 // Connection Test
 void read_command( const std_msgs::UInt16& cmd_msg){
-  
-  command = cmd_msg.data - neutral_cal;
+
+  // Rescale the Steering Command
+  command = cmd_msg.data;
+  if (command <=  512){
+    command = map(command, 512 , 0, neutral , max_r);
+    }
+  else{
+    command = map(command, 512 , 1024, neutral , max_l);
+    }
   command = constrain(command, max_r, max_l);
-  str_msg.data = sensorValue + neutral_cal ;
+
+  if (sensorValue <=  neutral){
+    sensorValue = map(sensorValue, neutral , max_r, 512 , 0);
+    }
+  else{
+    sensorValue = map(sensorValue, neutral , max_l, 512 , 1024);
+    }
+  
+  str_msg.data = sensorValue ;
   pub.publish(&str_msg);
 }
 
